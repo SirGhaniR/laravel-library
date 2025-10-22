@@ -1,14 +1,11 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-  return view('welcome');
+  return view('index');
 });
 
-Route::get('/home', [HomeController::class, 'index']);
-Route::post('/home', [HomeController::class, 'store']);
-Route::get('/category/{id}', [HomeController::class, 'edit']);
-Route::put('/category/{id}', [HomeController::class, 'update']);
-Route::delete('/category/{id}', [HomeController::class, 'destroy']);
+Route::apiResource('category', CategoryController::class);

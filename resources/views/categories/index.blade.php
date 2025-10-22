@@ -60,13 +60,15 @@
             <tr>
               <th scope="row">{{ $loop->index + 1 }}</th>
               <td>{{ $data->category_name }}</td>
-              <td class="d-flex gap-2">
-                <a href="category/{{ $data->id }}" class="btn btn-warning">Update</a>
-                <form action="category/{{ $data->id }}" method="post">
-                  @method('DELETE')
-                  @csrf
-                  <button class="btn btn-danger">Delete</button>
-                </form>
+              <td>
+                <div class="btn-group" role="group">
+                  <a href="category/{{ $data->id }}" class="btn btn-warning">Update</a>
+                  <form action="category/{{ $data->id }}" method="post">
+                    @method('DELETE')
+                    @csrf
+                    <button class="btn btn-danger">Delete</button>
+                  </form>
+                </div>
               </td>
             </tr>
           @endforeach

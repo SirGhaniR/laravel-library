@@ -39,7 +39,7 @@
             <label for="category" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="category" name="category_name"
-                value="{{ $data->category_name }}" placeholder="Insert edited category name here.">
+                value="{{ $data->category_name }}">
             </div>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
