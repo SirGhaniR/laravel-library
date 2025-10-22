@@ -18,6 +18,7 @@
       <div class="card-body">
         <h5 class="card-title">Add new category</h5>
 
+
         @if (session('success'))
           <div class="alert alert-success">
             {{ session('success') }}
@@ -60,15 +61,13 @@
             <tr>
               <th scope="row">{{ $loop->index + 1 }}</th>
               <td>{{ $data->category_name }}</td>
-              <td>
-                <div class="btn-group" role="group">
-                  <a href="category/{{ $data->id }}" class="btn btn-warning">Update</a>
-                  <form action="category/{{ $data->id }}" method="post">
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn btn-danger">Delete</button>
-                  </form>
-                </div>
+              <td class="d-flex gap-2">
+                <a href="category/{{ $data->id }}" class="btn btn-warning">Update</a>
+                <form action="category/{{ $data->id }}" method="post">
+                  @method('DELETE')
+                  @csrf
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
               </td>
             </tr>
           @endforeach
