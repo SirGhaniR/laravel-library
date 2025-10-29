@@ -23,7 +23,7 @@ class CategoryController extends Controller
             'category_name' => $request->category_name
         ]);
 
-        return redirect('/category')->with('success', 'Category has successfully been added to database!');
+        return redirect('/admin/category')->with('success', 'Category has successfully been added to database!');
     }
 
     public function show($id)
@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $data->category_name = $request->category_name;
         $data->save();
 
-        return redirect('/category')->with('success', 'Category has successfully been updated in database!');
+        return redirect('/admin/category')->with('success', 'Category has successfully been updated in database!');
     }
 
     public function destroy($id)
@@ -50,6 +50,6 @@ class CategoryController extends Controller
         $data = Category::find($id);
         $data->delete();
 
-        return redirect('/category')->with('success', 'Category has successsfully been deleted in database!');
+        return redirect('/admin/category')->with('success', 'Category has successsfully been deleted in database!');
     }
 }

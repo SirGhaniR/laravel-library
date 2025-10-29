@@ -9,6 +9,9 @@ Route::get('/', function () {
   return view('index');
 });
 
-Route::apiResource('category', CategoryController::class);
+Route::apiResource('home', HomeController::class);
 
-Route::apiResource('book',  BookController::class);
+Route::prefix('/admin')->group(function () {
+  Route::apiResource('book', BookController::class);
+  Route::apiResource('category', CategoryController::class);
+});

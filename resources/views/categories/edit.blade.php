@@ -10,6 +10,27 @@
 </head>
 
 <body>
+  <header
+    class="d-flex align-items-center justify-content-center justify-content-md-between border-bottom mb-4 flex-wrap p-3">
+    <div class="col-md-3 mb-md-0 mb-2">
+      <a href="/"
+        class="d-flex align-items-center mb-md-0 me-md-auto link-body-emphasis text-decoration-none mb-3">
+        <span class="fs-4">Laravel Library</span>
+      </a>
+    </div>
+    <ul class="nav col-12 col-md-auto justify-content-center mb-md-0 mb-2">
+      <li><a href="home" class="nav-link px-2">Home</a></li>
+      <li><a href="book" class="nav-link px-2">Books</a></li>
+      <li><a href="category" class="nav-link link-secondary px-2">Categories</a></li>
+    </ul>
+    <div class="col-md-3 text-end">
+      <button type="button" class="btn btn-outline-primary me-2">
+        Login
+      </button>
+      <button type="button" class="btn btn-primary">Sign-up</button>
+    </div>
+  </header>
+
   <div class="container my-5">
     <div class="card mb-3">
       <div class="card-header">

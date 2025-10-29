@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Book;
 use App\Models\Category;
 
@@ -10,9 +11,12 @@ class BookController extends Controller
 {
     public function index()
     {
-        $datas = Book::all();
+        $books = DB::table('categories')
+            ->join('books', 'categories.id', '=', 'books.category_id')
+            ->select('books.*', 'categories.category_name')
+            ->get();
         $categories = Category::all();
-        return view('books.index', compact('datas', 'categories'));
+        return view('books.index', compact('books', 'categories'));
     }
 
     public function store(Request $request)
@@ -33,43 +37,42 @@ class BookController extends Controller
             'category_id' => $request->category
         ]);
 
-        return redirect('/book')->with('success', 'Book has successfully been added to database!');
+        return redirect('/admin/book')->with('success', 'Book has successfully been added to database!');
     }
 
     public function show(string $id)
     {
-        $data = Book::find($id);
-        return view('books.edit', compact('data'));
+        $books = Book::find($id);
+        $categories = Category::all();
+        return view('books.edit', compact('books', 'categories'));
     }
 
     public function update(Request $request, string $id)
     {
-        $categories = Category::all();
-
         $request->validate([
-            'title' => 'required|unique:books,title',
+            'title' => 'required',
             'author' => 'required',
             'year' => 'required',
             'quantity' => 'required',
             'category' => 'required'
         ]);
 
-        $data = Book::find($id);
-        $data->title = $request->title;
-        $data->author = $request->author;
-        $data->year = $request->year;
-        $data->quantity = $request->quantity;
-        $data->category_id = $request->category_id;
-        $data->save();
+        $books = Book::find($id);
+        $books->title = $request->title;
+        $books->author = $request->author;
+        $books->year = $request->year;
+        $books->quantity = $request->quantity;
+        $books->category_id = $request->category;
+        $books->save();
 
-        return redirect('/book')->with('success', 'Book has successfully been updated in database!');
+        return redirect('/admin/book')->with('success', 'Book has successfully been updated in database!');
     }
 
     public function destroy(string $id)
     {
-        $data = Book::find($id);
-        $data->delete();
+        $books = Book::find($id);
+        $books->delete();
 
-        return redirect('/book')->with('success', 'Category has successsfully been deleted in database!');
+        return redirect('/admin/book')->with('success', 'Book has successsfully been deleted in database!');
     }
 }
