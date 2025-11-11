@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 
-
 Route::prefix('/admin')->group(function () {
   Route::apiResource('book', BookController::class);
   Route::apiResource('category', CategoryController::class);
