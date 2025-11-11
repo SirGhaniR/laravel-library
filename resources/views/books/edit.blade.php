@@ -88,7 +88,7 @@
             <label for="category" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
               <select class="form-select" name="category" id="category">
-                <option selected disabled>Choose the category for this book</option>
+                <option value="{{ $books->category_id }}" selected>{{ $books->category_name }}</option>
                 @foreach ($categories as $category)
                   <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                 @endforeach

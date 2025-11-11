@@ -19,7 +19,7 @@
       </a>
     </div>
     <ul class="nav col-12 col-md-auto justify-content-center mb-md-0 mb-2">
-      <li><a href="home" class="nav-link px-2">Home</a></li>
+      <li><a href="/home" class="nav-link px-2">Home</a></li>
       <li><a href="book" class="nav-link px-2">Books</a></li>
       <li><a href="category" class="nav-link link-secondary px-2">Categories</a></li>
     </ul>
