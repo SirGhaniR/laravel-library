@@ -16,7 +16,7 @@ class BookController extends Controller
             ->select('books.*', 'categories.category_name')
             ->get();
         $categories = Category::all();
-        return view('books.index', compact('books', 'categories'));
+        return view('books.index', compact('books', 'categories'))->with('currentPage', 'book');
     }
 
     public function store(Request $request)
@@ -44,7 +44,8 @@ class BookController extends Controller
     {
         $books = Book::find($id);
         $categories = Category::all();
-        return view('books.edit', compact('books', 'categories'));
+
+        return view('books.edit', compact('books', 'categories'))->with('currentPage', 'book');
     }
 
     public function update(Request $request, string $id)

@@ -10,7 +10,7 @@ class CategoryController extends Controller
     public function index()
     {
         $datas = Category::all();
-        return view('categories.index', compact('datas'));
+        return view('categories.index', compact('datas'))->with('currentPage', 'book');
     }
 
     public function store(Request $request)
@@ -29,7 +29,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $data = Category::find($id);
-        return view('categories.edit', compact('data'));
+        return view('categories.edit', compact('data'))->with('currentPage', 'book');
     }
 
     public function update(Request $request, $id)
