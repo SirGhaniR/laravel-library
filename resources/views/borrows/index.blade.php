@@ -1,70 +1,73 @@
 <x-header :current-page="$currentPage" />
 <div class="container my-5">
-  <div class="card mb-3">
-    <div class="card-header">
-      Hello!
+  @if (Auth::user()->role()->where('role_name', 'admin')->exists())
+    <div class="card mb-3">
+      <div class="card-header">
+        Hello!
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Borrow Books</h5>
+
+        @if (session('success'))
+          <div class="alert alert-success">
+            {{ session('success') }}
+          </div>
+        @endif
+
+        @if ($errors->any())
+          <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+              <ul>
+                <li>{{ $error }}</li>
+              </ul>
+            @endforeach
+          </div>
+        @endif
+
+        <form method="POST">
+          @csrf
+          <div class="row my-3">
+            <label for="book_id" class="col-sm-2 col-form-label">Book's Title</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="book_id" id="book_id">
+                <option selected disabled>Choose the title of the book that you want to borrow</option>
+                @foreach ($books as $book)
+                  <option value="{{ $book->id }}">{{ $book->title }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="row my-3">
+            <label for="member" class="col-sm-2 col-form-label">Member</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="member" id="member">
+                <option selected disabled>Which member would like to borrow</option>
+                @foreach ($users as $user)
+                  <option value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="row my-3">
+            <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" id="quantity" name="quantity" value="{{ old('quantity') }}"
+                placeholder="Insert book's quantity here.">
+            </div>
+          </div>
+          <div class="row my-3">
+            <label for="start_date" class="col-sm-2 col-form-label">Start Date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" id="start_date" name="start_date"
+                value="{{ old('start_date') }}"
+                placeholder="Insert the date of when you're going to borrow the book here.">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">Borrow Books</h5>
-
-      @if (session('success'))
-        <div class="alert alert-success">
-          {{ session('success') }}
-        </div>
-      @endif
-
-      @if ($errors->any())
-        <div class="alert alert-danger">
-          @foreach ($errors->all() as $error)
-            <ul>
-              <li>{{ $error }}</li>
-            </ul>
-          @endforeach
-        </div>
-      @endif
-
-      <form method="POST">
-        @csrf
-        <div class="row my-3">
-          <label for="book_id" class="col-sm-2 col-form-label">Book's Title</label>
-          <div class="col-sm-10">
-            <select class="form-select" name="book_id" id="book_id">
-              <option selected disabled>Choose the title of the book that you want to borrow</option>
-              @foreach ($books as $book)
-                <option value="{{ $book->id }}">{{ $book->title }}</option>
-              @endforeach
-            </select>
-          </div>
-        </div>
-        <div class="row my-3">
-          <label for="member" class="col-sm-2 col-form-label">Member</label>
-          <div class="col-sm-10">
-            <select class="form-select" name="member" id="member">
-              <option selected disabled>Which member would like to borrow</option>
-              @foreach ($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
-              @endforeach
-            </select>
-          </div>
-        </div>
-        <div class="row my-3">
-          <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
-          <div class="col-sm-10">
-            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ old('quantity') }}"
-              placeholder="Insert book's quantity here.">
-          </div>
-        </div>
-        <div class="row my-3">
-          <label for="start_date" class="col-sm-2 col-form-label">Start Date</label>
-          <div class="col-sm-10">
-            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ old('start_date') }}"
-              placeholder="Insert the date of when you're going to borrow the book here.">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
-  </div>
+  @endif
 
   <div class="container rounded border">
     <table class="table-hover table align-middle">
@@ -109,12 +112,16 @@
             </td>
 
             <td class="d-flex gap-2">
-              <a href="{{ route('borrow.show', $borrow->id) }}" class="btn btn-warning">Update</a>
-              <form action="{{ route('borrow.destroy', $borrow->id) }}" method="post">
-                @method('DELETE')
-                @csrf
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </form>
+              @if (Auth::user()->role()->where('role_name', 'admin')->exists())
+                <a href="{{ route('borrow.show', $borrow->id) }}" class="btn btn-warning">Update</a>
+                <form action="{{ route('borrow.destroy', $borrow->id) }}" method="post">
+                  @method('DELETE')
+                  @csrf
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              @else
+                <span class="text-muted">Read Only</span>
+              @endif
             </td>
           </tr>
         @endforeach
