@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Category</title>
+  @props(['currentPage' => '', 'title' => null])
+  <title>{{ $title ?? ucfirst($currentPage) . ' - Laravel Library' }}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
@@ -19,7 +20,6 @@
       </a>
     </div>
     <ul class="nav col-12 col-md-auto justify-content-center mb-md-0 mb-2">
-      @props(['currentPage' => ''])
       <li><a href="{{ $currentPage != 'home' ? url('/') : '#' }}" class="nav-link px-2">Home</a></li>
       <li><a href="{{ $currentPage != 'home' ? url('admin/book') : url('book') }}" class="nav-link px-2">Books</a></li>
       <li><a href="{{ $currentPage != 'home' ? url('admin/category') : url('category') }}"
@@ -28,9 +28,15 @@
       </li>
     </ul>
     <div class="col-md-3 text-end">
-      <button type="button" class="btn btn-outline-primary me-2">
-        Login
-      </button>
-      <button type="button" class="btn btn-primary">Sign-up</button>
+      @auth
+        <span class="me-3">Welcome, {{ Auth::user()->name }}!</span>
+        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+          @csrf
+          <button type="submit" class="btn btn-outline-danger">Logout</button>
+        </form>
+      @else
+        <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
+        <a href="{{ route('register') }}" class="btn btn-primary">Sign-up</a>
+      @endauth
     </div>
   </header>

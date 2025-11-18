@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
 use App\Models\Category;
 
@@ -21,6 +22,10 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
+        if (!Auth::user()->role()->where('role_name', 'admin')->exists()) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'title' => 'required|unique:books,title',
             'author' => 'required',
@@ -50,6 +55,10 @@ class BookController extends Controller
 
     public function update(Request $request, string $id)
     {
+        if (!Auth::user()->role()->where('role_name', 'admin')->exists()) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -71,6 +80,10 @@ class BookController extends Controller
 
     public function destroy(string $id)
     {
+        if (!Auth::user()->role()->where('role_name', 'admin')->exists()) {
+            abort(403, 'Unauthorized');
+        }
+
         $books = Book::find($id);
         $books->delete();
 

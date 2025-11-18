@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -15,6 +16,10 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        if (!Auth::user()->role()->where('role_name', 'admin')->exists()) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'category_name' => 'required|unique:categories,category_name'
         ]);
@@ -34,6 +39,10 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (!Auth::user()->role()->where('role_name', 'admin')->exists()) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'category_name' => 'required|unique:categories,category_name'
         ]);
@@ -47,6 +56,10 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
+        if (!Auth::user()->role()->where('role_name', 'admin')->exists()) {
+            abort(403, 'Unauthorized');
+        }
+
         $data = Category::find($id);
         $data->delete();
 

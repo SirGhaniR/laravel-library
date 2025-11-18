@@ -26,9 +26,9 @@
       <form method="POST">
         @csrf
         <div class="row my-3">
-          <label for="title" class="col-sm-2 col-form-label">Book's Title</label>
+          <label for="book_id" class="col-sm-2 col-form-label">Book's Title</label>
           <div class="col-sm-10">
-            <select class="form-select" name="title" id="title">
+            <select class="form-select" name="book_id" id="book_id">
               <option selected disabled>Choose the title of the book that you want to borrow</option>
               @foreach ($books as $book)
                 <option value="{{ $book->id }}">{{ $book->title }}</option>
@@ -109,8 +109,8 @@
             </td>
 
             <td class="d-flex gap-2">
-              <a href="borrow/{{ $borrow->id }}" class="btn btn-warning">Update</a>
-              <form action="borrow/{{ $borrow->id }}" method="post">
+              <a href="{{ route('borrow.show', $borrow->id) }}" class="btn btn-warning">Update</a>
+              <form action="{{ route('borrow.destroy', $borrow->id) }}" method="post">
                 @method('DELETE')
                 @csrf
                 <button type="submit" class="btn btn-danger">Delete</button>
