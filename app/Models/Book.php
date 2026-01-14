@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\JoinClause;
 
 class Book extends Model
 {
@@ -11,6 +12,21 @@ class Book extends Model
         'author',
         'year',
         'quantity',
+        'cover',
         'category_id'
     ];
+
+    public function withCategory()
+    {
+        return $this->join('categories', function (JoinClause $join) {
+            $join->on('books.category_id', '=', 'categories.id');
+        })->select(
+            'books.id',
+            'categories.category_name',
+            'books.title',
+            'books.author',
+            'books.quantity',
+            'books.year'
+        );
+    }
 }

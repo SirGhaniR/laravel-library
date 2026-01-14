@@ -43,7 +43,7 @@ class AuthController extends Controller
 
   public function register(Request $request)
   {
-    // nge cek mun si user na teh admin lah pokona mah
+    // sarua ngecek user admin lain
     if (!Auth::check() || !Auth::user()->role()->where('role_name', 'admin')->exists()) {
       return redirect('/')->with('error', 'Access denied. Only administrators can create new accounts.');
     }

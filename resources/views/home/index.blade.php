@@ -25,12 +25,12 @@
               </button>
             </a>
             <a href="admin/category">
-              <button type="button" class="btn btn-outline-secondary btn-lg px-4">
+              <button type="button" class="btn btn-secondary btn-lg px-4">
                 Manage Categories
               </button>
             </a>
             <a href="admin/borrow">
-              <button type="button" class="btn btn-outline-success btn-lg px-4">
+              <button type="button" class="btn btn-success btn-lg px-4">
                 Manage Borrows
               </button>
             </a>

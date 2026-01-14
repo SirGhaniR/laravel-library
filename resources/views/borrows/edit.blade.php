@@ -5,7 +5,10 @@
       Hello!
     </div>
     <div class="card-body">
-      <h5 class="card-title">Edit Borrow Record</h5>
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title">Edit Borrow Record</h5>
+        <a href="/admin/borrow">Back to borrows list</a>
+      </div>
 
       @if (session('success'))
         <div class="alert alert-success">

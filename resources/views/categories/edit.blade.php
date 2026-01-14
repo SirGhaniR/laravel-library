@@ -6,8 +6,8 @@
     </div>
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <h5 class="card-title">Add new category</h5>
-        <a href="/category">Back to categories</a>
+        <h5 class="card-title">Edit this category</h5>
+        <a href="/admin/category">Back to categories list</a>
       </div>
 
       @if (session('success'))
