@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Carbon\Carbon;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 
 class BookServiceController extends Controller
@@ -19,7 +20,7 @@ class BookServiceController extends Controller
     public function index()
     {
         return response([
-            "data" => $this->book->withCategory()->get()
+            'data' => $this->book->withCategory()->get()
         ]);
     }
 
@@ -31,12 +32,12 @@ class BookServiceController extends Controller
             'year' => 'required|digits:4',
             'quantity' => 'required|integer',
             'cover' => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:1024',
-            'category' => 'required|integer|exists:categories,id'
+            'category_id' => 'required|integer|exists:categories,id'
         ]);
 
         if ($request->file('cover')) {
             $filename = Carbon::now() . '.' . $request->file('cover')->extension();
-            $request->file('cover')->move(public_path('upload/'), $filename);
+            $request->file('cover')->storeAs('upload', $filename, 'public');
         }
 
         $this->book->create([
@@ -44,12 +45,13 @@ class BookServiceController extends Controller
             'author' => $request->author,
             'year' => $request->year,
             'quantity' => $request->quantity,
-            'cover' => url('/upload/', $filename),
-            'category_id' => $request->category
+            'cover' => $request->file('cover') ? url('/upload', $filename) : null,
+            'filename' => $filename,
+            'category_id' => $request->category_id
         ]);
 
         return response([
-            "message" => "New book have been added."
+            'message' => 'New book have been added.'
         ], 201);
     }
 
@@ -57,16 +59,44 @@ class BookServiceController extends Controller
     {
         $data = $this->book->withCategory()->find($id);
         return response([
-            "book" => $data
+            'book' => $data
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Book $book)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'year' => 'required|digits:4',
+            'quantity' => 'required|integer',
+            'cover' => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:1024',
+            'category_id' => 'required|integer|exists:categories,id'
+        ]);
+
+        $filename = '';
+        $detail = $this->book->find($id);
+
+        if ($request->file('cover')) {
+            // Storage::disk('public/upload')->delete($detail->filename);
+
+            $filename = Carbon::now() . '.' . $request->file('cover')->extension();
+            $request->file('cover')->storeAs('upload', $filename, 'public');
+        }
+
+        $this->book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'quantity' => $request->quantity,
+            'cover' => $request->file('cover') ? url('/upload', $filename) : null,
+            'filename' => $filename,
+            'category_id' => $request->category_id
+        ]);
+
+        return response([
+            'message' => 'This book has been updated.'
+        ], 201);
     }
 
     /**

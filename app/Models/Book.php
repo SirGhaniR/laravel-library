@@ -13,6 +13,7 @@ class Book extends Model
         'year',
         'quantity',
         'cover',
+        'filename',
         'category_id'
     ];
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('year');
             $table->integer('quantity');
             $table->string('cover')->nullable();
+            $table->string('filename')->nullable();
             $table->timestamps();
         });
     }
