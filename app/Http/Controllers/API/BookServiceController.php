@@ -36,7 +36,7 @@ class BookServiceController extends Controller
         ]);
 
         if ($request->file('cover')) {
-            $filename = Carbon::now() . '.' . $request->file('cover')->extension();
+            $filename = Carbon::now()->format('YmdHis') . '.' . $request->file('cover')->extension();
             $request->file('cover')->storeAs('upload', $filename, 'public');
         }
 
@@ -78,9 +78,9 @@ class BookServiceController extends Controller
         $detail = $this->book->find($id);
 
         if ($request->file('cover')) {
-            // Storage::disk('public/upload')->delete($detail->filename);
+            Storage::disk('public/upload')->delete($detail->filename);
 
-            $filename = Carbon::now() . '.' . $request->file('cover')->extension();
+            $filename = Carbon::now()->format('YmdHis') . '.' . $request->file('cover')->extension();
             $request->file('cover')->storeAs('upload', $filename, 'public');
         }
 
@@ -99,11 +99,9 @@ class BookServiceController extends Controller
         ], 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Book $book)
+    public function destroy(string $id)
     {
-        //
+        $book = $this->book->find($id);
+        $book->delete();
     }
 }
