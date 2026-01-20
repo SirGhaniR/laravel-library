@@ -51,13 +51,13 @@ class BookServiceController extends Controller
         ]);
 
         return response([
-            'message' => 'New book have been added.'
+            'message' => 'New book has been added.'
         ], 201);
     }
 
     public function show(String $id)
     {
-        $data = $this->book->withCategory()->find($id);
+        $data = $this->book->withCategory()->findOrFail($id);
         return response([
             'book' => $data
         ]);
@@ -75,24 +75,27 @@ class BookServiceController extends Controller
         ]);
 
         $filename = '';
-        $detail = $this->book->find($id);
+        $book = $this->book->findOrFail($id);
 
         if ($request->file('cover')) {
-            Storage::disk('public/upload')->delete($detail->filename);
+            Storage::disk('upload')->delete($book->filename);
 
             $filename = Carbon::now()->format('YmdHis') . '.' . $request->file('cover')->extension();
             $request->file('cover')->storeAs('upload', $filename, 'public');
         }
 
-        $this->book->update([
-            'title' => $request->title,
-            'author' => $request->author,
-            'year' => $request->year,
-            'quantity' => $request->quantity,
-            'cover' => $request->file('cover') ? url('/upload', $filename) : null,
-            'filename' => $filename,
-            'category_id' => $request->category_id
-        ]);
+        $book->title = $request->title;
+        $book->author = $request->author;
+        $book->year = $request->year;
+        $book->quantity = $request->quantity;
+        $book->category_id = $request->category_id;
+
+        if ($request->file('cover')) {
+            $book->cover = url('storage/upload/' . $filename);
+            $book->filename = $filename;
+        }
+
+        $book->save();
 
         return response([
             'message' => 'This book has been updated.'
@@ -101,7 +104,11 @@ class BookServiceController extends Controller
 
     public function destroy(string $id)
     {
-        $book = $this->book->find($id);
+        $book = $this->book->findOrFail($id);
         $book->delete();
+
+        return response([
+            'message' => 'This book has been deleted.'
+        ], 201);
     }
 }

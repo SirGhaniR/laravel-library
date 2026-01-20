@@ -18,7 +18,7 @@ class CategoryServiceController extends Controller
     public function index()
     {
         return response([
-            'data' => $this->category->getAllCategory()
+            'data' => $this->category->all()
         ]);
     }
 
@@ -39,7 +39,7 @@ class CategoryServiceController extends Controller
 
     public function show(string $id)
     {
-        $data = $this->category->find($id);
+        $data = $this->category->findOrFail($id);
         return response([
             'category' => $data
         ]);
@@ -51,21 +51,23 @@ class CategoryServiceController extends Controller
             'category_name' => 'required|unique:categories,category_name'
         ]);
 
-        $data = $this->category->find($id);
+        $data = $this->category->findOrFail($id);
         $data->category_name = $request->category_name;
         $data->save();
 
-        // $this->category->findOrFail($id);
-
-        // $this->category->update([
-        //     'category_name' => $request->category_name
-        // ]);
-
         return response([
-            'message' => 'New category have been added.'
+            'message' => 'This category has been updated.'
         ], 201);
     }
 
 
-    public function destroy(string $id) {}
+    public function destroy(string $id)
+    {
+        $category = $this->category->findOrFail($id);
+        $category->delete();
+
+        return response([
+            'message' => 'This category has been deleted.'
+        ], 201);
+    }
 }
