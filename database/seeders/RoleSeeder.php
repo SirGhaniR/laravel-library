@@ -42,20 +42,5 @@ class RoleSeeder extends Seeder
 
         $users = User::insert($user);
         $roles = Role::insert($role);
-
-        // foreach ($users as $user) {
-        //     if ($user['id'] == 1) {
-        //         UserRole::create([
-        //             "user_id" => $user['id'],
-        //             "role_id" => $user['id']
-        //         ]);
-        //     }
-        //     if ($user['id'] == 2) {
-        //         UserRole::create([
-        //             "user_id" => $user['id'],
-        //             "role_id" => $user['id']
-        //         ]);
-        //     }
-        // }
     }
 }

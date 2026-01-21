@@ -17,11 +17,19 @@ class BookServiceController extends Controller
         $this->book = $book;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        if (isset($request->search)) {
+            $data = $this->book->search($request->search);
+
+            return response([
+                'data' => $data
+            ], count($data) > 0 ? 200 : 400);
+        }
+
         return response([
             'data' => $this->book->withCategory()->get()
-        ]);
+        ], 200);
     }
 
     public function store(Request $request)
@@ -60,7 +68,7 @@ class BookServiceController extends Controller
         $data = $this->book->withCategory()->findOrFail($id);
         return response([
             'book' => $data
-        ]);
+        ], count($data) > 0 ? 200 : 400);
     }
 
     public function update(Request $request, string $id)
@@ -78,7 +86,7 @@ class BookServiceController extends Controller
         $book = $this->book->findOrFail($id);
 
         if ($request->file('cover')) {
-            Storage::disk('upload')->delete($book->filename);
+            // Storage::disk('upload')->delete($book->filename);
 
             $filename = Carbon::now()->format('YmdHis') . '.' . $request->file('cover')->extension();
             $request->file('cover')->storeAs('upload', $filename, 'public');

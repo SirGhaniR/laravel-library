@@ -35,6 +35,16 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('members', function (Blueprint $table) {
+            $table->string('id')->primary()->unique();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->date('start_date');
+            $table->date('expire_date');
+            $table->text('address');
+            $table->string('phone_number');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -45,5 +55,6 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('members');
     }
 };

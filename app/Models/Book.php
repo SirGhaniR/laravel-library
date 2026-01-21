@@ -30,4 +30,21 @@ class Book extends Model
             'books.year'
         );
     }
+
+    public function search($param)
+    {
+        return $this->join('categories', function (JoinClause $join) {
+            $join->on('books.category_id', '=', 'categories.id');
+        })
+            ->where('title', 'like', `%$param%`)
+            ->orWhere('categories.category_name', 'like', `%$param%`)
+            ->select(
+                'books.id',
+                'categories.category_name',
+                'books.title',
+                'books.author',
+                'books.quantity',
+                'books.year'
+            )->get();
+    }
 }

@@ -51,9 +51,9 @@ class CategoryServiceController extends Controller
             'category_name' => 'required|unique:categories,category_name'
         ]);
 
-        $data = $this->category->findOrFail($id);
-        $data->category_name = $request->category_name;
-        $data->save();
+        $category = $this->category->findOrFail($id);
+        $category->category_name = $request->category_name;
+        $category->save();
 
         return response([
             'message' => 'This category has been updated.'
