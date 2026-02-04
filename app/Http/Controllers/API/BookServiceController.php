@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use Carbon\Carbon;
-use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookServiceController extends Controller
 {
@@ -86,7 +86,7 @@ class BookServiceController extends Controller
         $book = $this->book->findOrFail($id);
 
         if ($request->file('cover')) {
-            // Storage::disk('upload')->delete($book->filename);
+            Storage::disk('upload')->delete($book->filename);
 
             $filename = Carbon::now()->format('YmdHis') . '.' . $request->file('cover')->extension();
             $request->file('cover')->storeAs('upload', $filename, 'public');

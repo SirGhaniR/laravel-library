@@ -8,7 +8,7 @@ class Borrow extends Model
 {
     protected $fillable = [
         'book_id',
-        'user_id',
+        'member_id',
         'quantity',
         'start_borrow',
         'end_borrow',
